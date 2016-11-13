@@ -72,7 +72,7 @@ function run()
 	requerimientoNeto();
 	//heuristica4();
 	//calcularCostoMantenerEnIHastaJ(0,3);
-	heuristica5();
+	heuristica6();
 }
 
 //Funciones
@@ -393,7 +393,7 @@ function heuristica5()
 		costoMantener.push(0);
 	}
 
-	//Llena el arreglo de lote pedido 4 de 0's del tamaño lead time + tamaño demandas 
+	//Llena el arreglo de lote pedido 5 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
 	{
 		arregloLotePedido5.push(0);
@@ -447,6 +447,84 @@ function heuristica5()
 	}
 
 	console.log(arregloLotePedido5);
+}
+
+//Política Mínimo Costo Unitario (MCU)
+function heuristica6()
+{
+	var costoAnterior=0;
+	var cantidadAnterior=0;
+	var costoMantener=[];
+	arregloLotePedido5=[];
+
+	for (var i = 0; i < num; i++) 
+	{
+		costoMantener.push(0);
+	}
+
+	//Llena el arreglo de lote pedido 6 de 0's del tamaño lead time + tamaño demandas 
+	for (var i = 0; i < num+t; i++) 
+	{
+		arregloLotePedido5.push(0);
+	}
+
+	for (var i = 0; i < num; i++) 
+	{	costoAnterior=0;
+		cantidadAnterior=0;
+		
+
+		for (var j = i; j <= num; j++) 
+		{
+			var cost=0;
+			
+			cost=calcularCostoMantenerEnIHastaJ(i,j+1);
+
+			
+			var media=0;
+			if(j==i)
+			{
+				cantidadAnterior=rn[i];
+				media=(cost+k[i])/cantidadAnterior;
+
+			}else{
+				cantidadAnterior+=rn[j];
+				media=(cost+k[i])/cantidadAnterior;
+			}
+			
+			//console.log(i,j,"media",media,"cost", cost, "costoAnterior",costoAnterior, arregloLotePedido5);
+
+
+			if(media<=costoAnterior || costoAnterior==0)
+			{
+
+				costoAnterior=media;
+				arregloLotePedido5[i]+=rn[j];
+				//console.log("agrego",rn[j],j);
+			}
+			else
+			{
+				if(j!=num)
+				{
+					i=j;
+					j=j-1;
+				}else{
+					j=num;
+					i=num;
+				}
+				
+				costoAnterior=0;
+			}
+		}
+
+		
+	}
+	//console.log(arregloLotePedido5);
+}
+
+//Política Wagner Whitin
+function heuristica7()
+{
+	
 }
 
 
