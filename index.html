@@ -1,179 +1,333 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
-<style>
+<html lang="en">
 
-svg {
-  font: 10px sans-serif;
-}
+<head>
 
-.y.axis path {
-  display: none;
-}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-.y.axis line {
-  stroke: #fff;
-  stroke-opacity: .2;
-  shape-rendering: crispEdges;
-}
+    <title>Políticas de pedido</title>
 
-.y.axis .zero line {
-  stroke: #000;
-  stroke-opacity: 1;
-}
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 
-.title {
-  font: 300 78px Helvetica Neue;
-  fill: #666;
-}
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
 
-.birthyear,
-.age {
-  text-anchor: middle;
-}
+    <!-- Morris Charts CSS -->
+    <link href="css/plugins/morris.css" rel="stylesheet">
 
-.birthyear {
-  fill: #fff;
-}
+    <!-- Custom Fonts -->
+    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-rect {
-  fill-opacity: .6;
-  fill: #e377c2;
-}
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-rect:first-child {
-  fill: #1f77b4;
-}
+    </head>
 
-</style>
-<body>
-<script src="main.js"></script>
-<script src="//d3js.org/d3.v3.min.js"></script>
-<script>
+    <body>
 
-var margin = {top: 20, right: 40, bottom: 30, left: 20},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom,
-    barWidth = Math.floor(width / 19) - 1;
+        <div id="wrapper">
 
-var x = d3.scale.linear()
-    .range([barWidth / 2, width - barWidth / 2]);
+            <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">Cálculo de pedido</a>
+                </div>
+                <!-- Top Menu Items -->
+                <ul class="nav navbar-right top-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
+                        <ul class="dropdown-menu message-dropdown">
+                            <li class="message-preview">
+                                <a href="#">
+                                    <div class="media">
+                                        <span class="pull-left">
+                                            <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        </span>
+                                        <div class="media-body">
+                                            <h5 class="media-heading"><strong>John Smith</strong>
+                                            </h5>
+                                            <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="message-preview">
+                                <a href="#">
+                                    <div class="media">
+                                        <span class="pull-left">
+                                            <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        </span>
+                                        <div class="media-body">
+                                            <h5 class="media-heading"><strong>John Smith</strong>
+                                            </h5>
+                                            <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="message-preview">
+                                <a href="#">
+                                    <div class="media">
+                                        <span class="pull-left">
+                                            <img class="media-object" src="http://placehold.it/50x50" alt="">
+                                        </span>
+                                        <div class="media-body">
+                                            <h5 class="media-heading"><strong>John Smith</strong>
+                                            </h5>
+                                            <p class="small text-muted"><i class="fa fa-clock-o"></i> Yesterday at 4:32 PM</p>
+                                            <p>Lorem ipsum dolor sit amet, consectetur...</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="message-footer">
+                                <a href="#">Read All New Messages</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
+                        <ul class="dropdown-menu alert-dropdown">
+                            <li>
+                                <a href="#">Alert Name <span class="label label-default">Alert Badge</span></a>
+                            </li>
+                            <li>
+                                <a href="#">Alert Name <span class="label label-primary">Alert Badge</span></a>
+                            </li>
+                            <li>
+                                <a href="#">Alert Name <span class="label label-success">Alert Badge</span></a>
+                            </li>
+                            <li>
+                                <a href="#">Alert Name <span class="label label-info">Alert Badge</span></a>
+                            </li>
+                            <li>
+                                <a href="#">Alert Name <span class="label label-warning">Alert Badge</span></a>
+                            </li>
+                            <li>
+                                <a href="#">Alert Name <span class="label label-danger">Alert Badge</span></a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">View All</a>
+                            </li>
+                        </ul>
+                    </li>
 
-var y = d3.scale.linear()
-    .range([height, 0]);
+                    <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+                    <div class="collapse navbar-collapse navbar-ex1-collapse">
+                        <ul class="nav navbar-nav side-nav">
+                            <li class="active">
+                                <a href="index.html"><i class="f
+                                    a fa-fw fa-dashboard"></i> Dashboard</a>
+                                </li>
+                                <li>
+                                    <a href="charts.html"><i class="fa fa-fw fa-bar-chart-o"></i> Charts</a>
+                                </li>
+                                <li>
+                                    <a href="tables.html"><i class="fa fa-fw fa-table"></i> Tables</a>
+                                </li>
+                                <li>
+                                    <a href="forms.html"><i class="fa fa-fw fa-edit"></i> Forms</a>
+                                </li>
+                                <li>
+                                    <a href="bootstrap-elements.html"><i class="fa fa-fw fa-desktop"></i> Bootstrap Elements</a>
+                                </li>
+                                <li>
+                                    <a href="bootstrap-grid.html"><i class="fa fa-fw fa-wrench"></i> Bootstrap Grid</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i class="fa fa-fw fa-arrows-v"></i> Dropdown <i class="fa fa-fw fa-caret-down"></i></a>
+                                    <ul id="demo" class="collapse">
+                                        <li>
+                                            <a href="#">Dropdown Item</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Dropdown Item</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="blank-page.html"><i class="fa fa-fw fa-file"></i> Blank Page</a>
+                                </li>
+                                <li>
+                                    <a href="index-rtl.html"><i class="fa fa-fw fa-dashboard"></i> RTL Dashboard</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.navbar-collapse -->
+                    </nav>
 
-var yAxis = d3.svg.axis()
-    .scale(y)
-    .orient("right")
-    .tickSize(-width)
-    .tickFormat(function(d) { return Math.round(d / 1e6) + "M"; });
+                    <div id="page-wrapper">
 
-// An SVG element with a bottom-right origin.
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                        <div class="container-fluid">
 
-// A sliding container to hold the bars by birthyear.
-var birthyears = svg.append("g")
-    .attr("class", "birthyears");
+                            <!-- Page Heading -->
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h1 class="page-header">
+                                        Modelos con demanda dinámica <small>Análisis y comparación de costos</small>
+                                    </h1>
+                                    <ol class="breadcrumb">
+                                        <li class="active">
+                                            <i class="fa fa-dashboard"></i> Ingrese los parámetros
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
 
-// A label for the current year.
-var title = svg.append("text")
-    .attr("class", "title")
-    .attr("dy", ".71em")
-    .text(2000);
+                            <!-- /.row -->
 
-d3.csv("population.csv", function(error, data) {
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <i class="fa fa-calendar fa-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                    <h3># Periodos</h3>
+                                                    <div class="form-group">
+                                                        <input class="form-control"  type="number" id="numPeriodos">
+                                                    </div>                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="panel panel-yellow">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="col-xs-3">
+                                                    <i class="fa fa-clock-o fa-5x"></i>
+                                                </div>
+                                                <div class="col-xs-9 text-right">
+                                                    <h3>Lead Time</h3>
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-  // Convert strings to numbers.
-  data.forEach(function(d) {
-    d.people = +d.people;
-    d.year = +d.year;
-    d.age = +d.age;
-  });
+                                <div class="col-lg-3 col-md-6">
+                                <div class="row">
+                                    <button type="button" class="btn btn-success btn-lg" onclick="generarCasillas()">Definir horizonte de planeación</button> </div>
+                                    <div class="row">
+                                    <p> </p>
+                                    <p>
+                                    <button type="button" class="btn btn-danger btn-lg" onclick="reload()">Reiniciar</button>
+                                    </p>
+                                    </div>
+                                </div>
+                            </div>
 
-  // Compute the extent of the data set in age and years.
-  var age1 = d3.max(data, function(d) { return d.age; }),
-      year0 = d3.min(data, function(d) { return d.year; }),
-      year1 = d3.max(data, function(d) { return d.year; }),
-      year = year1;
 
-  // Update the scale domains.
-  x.domain([year1 - age1, year1]);
-  y.domain([0, d3.max(data, function(d) { return d.people; })]);
 
-  // Produce a map from year and birthyear to [male, female].
-  data = d3.nest()
-      .key(function(d) { return d.year; })
-      .key(function(d) { return d.year - d.age; })
-      .rollup(function(v) { return v.map(function(d) { return d.people; }); })
-      .map(data);
+                            <!-- /.row -->
 
-  // Add an axis to show the population values.
-  svg.append("g")
-      .attr("class", "y axis")
-      .attr("transform", "translate(" + width + ",0)")
-      .call(yAxis)
-    .selectAll("g")
-    .filter(function(value) { return !value; })
-      .classed("zero", true);
+                            <!-- /.row -->
 
-  // Add labeled rects for each birthyear (so that no enter or exit is required).
-  var birthyear = birthyears.selectAll(".birthyear")
-      .data(d3.range(year0 - age1, year1 + 1, 5))
-    .enter().append("g")
-      .attr("class", "birthyear")
-      .attr("transform", function(birthyear) { return "translate(" + x(birthyear) + ",0)"; });
+                            <div class="col-lg-12">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Parámetros por periodo</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="tablaParametros">
+                                                <thead>
+                                                    <tr id="periodos">
+                                                        <th></th>
 
-  birthyear.selectAll("rect")
-      .data(function(birthyear) { return data[year][birthyear] || [0, 0]; })
-    .enter().append("rect")
-      .attr("x", -barWidth / 2)
-      .attr("width", barWidth)
-      .attr("y", y)
-      .attr("height", function(value) { return height - y(value); });
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr id="demanda">
+                                                        <th>Demanda</th>
 
-  // Add labels to show birthyear.
-  birthyear.append("text")
-      .attr("y", height - 4)
-      .text(function(birthyear) { return birthyear; });
+                                                    </tr>
 
-  // Add labels to show age (separate; not animated).
-  svg.selectAll(".age")
-      .data(d3.range(0, age1 + 1, 5))
-    .enter().append("text")
-      .attr("class", "age")
-      .attr("x", function(age) { return x(year - age); })
-      .attr("y", height + 4)
-      .attr("dy", ".71em")
-      .text(function(age) { return age; });
+                                                    <tr id="recepciones">
+                                                        <th>Recepciones programadas</th>
+   
 
-  // Allow the arrow keys to change the displayed year.
-  window.focus();
-  d3.select(window).on("keydown", function() {
-    switch (d3.event.keyCode) {
-      case 37: year = Math.max(year0, year - 10); break;
-      case 39: year = Math.min(year1, year + 10); break;
-    }
-    update();
-  });
+                                                    </tr>
+                                                    <tr id="inventario">
+                                                        <th>Inventario de seguridad</th>
 
-  function update() {
-    if (!(year in data)) return;
-    title.text(year);
 
-    birthyears.transition()
-        .duration(750)
-        .attr("transform", "translate(" + (x(year1) - x(year)) + ",0)");
+                                                    </tr>
+                                                    <tr id="costoPedir">
+                                                        <th>Costo de pedir</th>
 
-    birthyear.selectAll("rect")
-        .data(function(birthyear) { return data[year][birthyear] || [0, 0]; })
-      .transition()
-        .duration(750)
-        .attr("y", y)
-        .attr("height", function(value) { return height - y(value); });
-  }
-});
 
-</script>
+                                                    </tr>
+                                                    <tr id="costoMantener">
+                                                        <th>Costo de mantener</th>
+
+
+
+                                                    </tr>
+                                                    <tr id="costoUnitario">
+                                                        <th>Costo unitario</th>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                                    <div class="col-lg-6">
+                                    <button type="button" class="btn btn-warning btn-lg" onclick="reload()">Analizar horizonte</button>
+                                    </div>
+                        </div>
+                        <!-- /.row -->
+
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- /#page-wrapper -->
+
+            </div>
+            <!-- /#wrapper -->
+
+            <!-- jQuery -->
+            <script src="js/jquery.js"></script>
+
+            <!-- Bootstrap Core JavaScript -->
+            <script src="js/bootstrap.min.js"></script>
+
+            <!-- Morris Charts JavaScript -->
+            <script src="js/plugins/morris/raphael.min.js"></script>
+            <script src="js/plugins/morris/morris.min.js"></script>
+            <script src="js/plugins/morris/morris-data.js"></script>
+            <script src="view.js"></script>
+
+        </body>
+
+        </html>

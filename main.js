@@ -455,7 +455,7 @@ function heuristica6()
 	var costoAnterior=0;
 	var cantidadAnterior=0;
 	var costoMantener=[];
-	arregloLotePedido5=[];
+	arregloLotePedido6=[];
 
 	for (var i = 0; i < num; i++) 
 	{
@@ -465,7 +465,7 @@ function heuristica6()
 	//Llena el arreglo de lote pedido 6 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
 	{
-		arregloLotePedido5.push(0);
+		arregloLotePedido6.push(0);
 	}
 
 	for (var i = 0; i < num; i++) 
@@ -498,7 +498,7 @@ function heuristica6()
 			{
 
 				costoAnterior=media;
-				arregloLotePedido5[i]+=rn[j];
+				arregloLotePedido6[i]+=rn[j];
 				//console.log("agrego",rn[j],j);
 			}
 			else
@@ -518,13 +518,33 @@ function heuristica6()
 
 		
 	}
-	//console.log(arregloLotePedido5);
+	//console.log(arregloLotePedido6);
 }
 
 //Política Wagner Whitin
 function heuristica7()
 {
-	
+	var costoAnterior=0;
+	var cantidadAnterior=0;
+	var costoMantener=[];
+	arregloLotePedido7=[];
+	var fk=[];
+
+	for (var i = 0; i < num; i++) 
+	{
+		costoMantener.push(0);
+	}
+
+	//Llena el arreglo de lote pedido 7 de 0's del tamaño lead time + tamaño demandas 
+	for (var i = 0; i < num+t; i++) 
+	{
+		arregloLotePedido7.push(0);
+	}
+
+	for (var i = 0; i < num; i++) 
+	{
+		fk.push(0);
+	}
 }
 
 
