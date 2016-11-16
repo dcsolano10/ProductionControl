@@ -64,11 +64,21 @@ var costoMantener7;
 
 // Se llama desde el botón
 
-run();
 
 function run()
 {
-	load();
+	loadA();
+
+	console.log(num);
+	console.log(d);
+	console.log(k);
+	console.log(h);
+	console.log(c);
+	console.log(ss);
+	console.log(t);
+	console.log(rp);
+
+
 	requerimientoNeto();
 	//heuristica4();
 	//calcularCostoMantenerEnIHastaJ(0,3);
@@ -78,7 +88,7 @@ function run()
 //Funciones
 
 //Cargar datos
-function load()
+function loadDummy()
 {
 	num = 6;
 	d = [40,60,70,20,90,160]; 
@@ -88,6 +98,66 @@ function load()
 	k = [300,300,300,300,300,300]; 
 	h = [2,2,2,2,2,2]; 
 	c = [10,10,10,10,10,10]; 
+}
+
+function loadA()
+{
+	t = leadTimeA;
+	num = numPeriodosA;
+
+	d = []; 
+	demandaHTML = $('#demanda');
+	$(demandaHTML).find('td').each (function() {
+		var numero = $(this).find('input').val();
+		numero = parseInt(numero);
+		d.push(numero);
+	});  
+
+	rp = [];
+
+	recepcionesHTML = $('#recepciones');
+	$(recepcionesHTML).find('td').each (function() {
+		var numero = $(this).find('input').val();
+		numero = parseInt(numero);
+		rp.push(numero);
+	}); 
+
+	ss = [];
+
+	ssHTML = $('#inventario');
+	$(ssHTML).find('td').each (function() {
+		var numero = $(this).find('input').val();
+		numero = parseInt(numero);
+		ss.push(numero);
+	}); 
+
+
+	k = []; 
+
+	kHTML = $('#costoPedir');
+	$(kHTML).find('td').each (function() {
+		var numero = $(this).find('input').val();
+		numero = parseInt(numero);
+		k.push(numero);
+	}); 
+
+	h = []; 
+
+	hHTML = $('#costoMantener');
+	$(hHTML).find('td').each (function() {
+		var numero = $(this).find('input').val();
+		numero = parseInt(numero);
+		h.push(numero);
+	}); 
+
+	c = []; 
+
+	cHTML = $('#costoUnitario');
+	$(cHTML).find('td').each (function() {
+		var numero = $(this).find('input').val();
+		numero = parseInt(numero);
+		c.push(numero);
+	}); 
 }
 
 //Calcular requerimiento neto para cada periodo
@@ -210,8 +280,8 @@ function heuristica2()
 			}
 
 		}else{//Estoy en el último periodo
-				arregloLotePedido2[i]=rn[i]-arregloInventario2[i-1];
-				arregloInventario2[i]=0;
+			arregloLotePedido2[i]=rn[i]-arregloInventario2[i-1];
+			arregloInventario2[i]=0;
 		}
 		
 	}
@@ -337,49 +407,49 @@ function heuristica4()
 	}
 
 	for (var i = 0; i < num; i++) 
-	{	costoAnterior=0;
-		arregloLotePedido4[i]+=rn[i];
-		for (var j = i+1; j <= num; j++) 
-		{
-			var cost=calcularCostoMantenerEnIHastaJ(i,j);
-
-			if(j==num)
+		{	costoAnterior=0;
+			arregloLotePedido4[i]+=rn[i];
+			for (var j = i+1; j <= num; j++) 
 			{
-				if(Math.abs(cost-k[i])<=Math.abs(k[i]-costoAnterior))
-				{
-					i=j-1;
-					break;
+				var cost=calcularCostoMantenerEnIHastaJ(i,j);
 
+				if(j==num)
+				{
+					if(Math.abs(cost-k[i])<=Math.abs(k[i]-costoAnterior))
+					{
+						i=j-1;
+						break;
+
+					}else{
+						i=j-2;
+						arregloLotePedido4[i-1]-=rn[j-1];
+						break;
+					}
+				}
+
+				if(cost>=k[i])
+				{
+					if(Math.abs(cost-k[i])<=Math.abs(k[i]-costoAnterior))
+					{
+						i=j-1;
+						break;
+
+					}else{
+						i=j-1;
+						arregloLotePedido4[i]-=rn[j]
+						break;
+					}
 				}else{
-					i=j-2;
-					arregloLotePedido4[i-1]-=rn[j-1];
-					break;
+					costoAnterior+=cost;
+					arregloLotePedido4[i]+=rn[j];
 				}
 			}
 
-			if(cost>=k[i])
-			{
-				if(Math.abs(cost-k[i])<=Math.abs(k[i]-costoAnterior))
-				{
-					i=j-1;
-					break;
 
-				}else{
-					i=j-1;
-					arregloLotePedido4[i]-=rn[j]
-					break;
-				}
-			}else{
-				costoAnterior+=cost;
-				arregloLotePedido4[i]+=rn[j];
-			}
 		}
 
-		
+		console.log(arregloLotePedido4);
 	}
-
-	console.log(arregloLotePedido4);
-}
 
 //Heurística 5: Política Silver Meal
 function heuristica5()
@@ -400,24 +470,24 @@ function heuristica5()
 	}
 
 	for (var i = 0; i < num; i++) 
-	{	costoAnterior=0;
-		
+		{	costoAnterior=0;
 
-		for (var j = i; j <= num; j++) 
-		{
-			var cost=0;
-			
-			cost=calcularCostoMantenerEnIHastaJ(i,j+1);
-			
-			var media=0;
-			if(j==i)
+
+			for (var j = i; j <= num; j++) 
 			{
-				media=(cost+k[i])/1;
+				var cost=0;
 
-			}else{
-				media=(cost+k[i])/(j-i+1);
-			}
-			
+				cost=calcularCostoMantenerEnIHastaJ(i,j+1);
+
+				var media=0;
+				if(j==i)
+				{
+					media=(cost+k[i])/1;
+
+				}else{
+					media=(cost+k[i])/(j-i+1);
+				}
+
 			//console.log(i,j,"media",media,"cost", cost, "costoAnterior",costoAnterior, arregloLotePedido5);
 
 
@@ -469,28 +539,28 @@ function heuristica6()
 	}
 
 	for (var i = 0; i < num; i++) 
-	{	costoAnterior=0;
-		cantidadAnterior=0;
-		
+		{	costoAnterior=0;
+			cantidadAnterior=0;
 
-		for (var j = i; j <= num; j++) 
-		{
-			var cost=0;
-			
-			cost=calcularCostoMantenerEnIHastaJ(i,j+1);
 
-			
-			var media=0;
-			if(j==i)
+			for (var j = i; j <= num; j++) 
 			{
-				cantidadAnterior=rn[i];
-				media=(cost+k[i])/cantidadAnterior;
+				var cost=0;
 
-			}else{
-				cantidadAnterior+=rn[j];
-				media=(cost+k[i])/cantidadAnterior;
-			}
-			
+				cost=calcularCostoMantenerEnIHastaJ(i,j+1);
+
+
+				var media=0;
+				if(j==i)
+				{
+					cantidadAnterior=rn[i];
+					media=(cost+k[i])/cantidadAnterior;
+
+				}else{
+					cantidadAnterior+=rn[j];
+					media=(cost+k[i])/cantidadAnterior;
+				}
+
 			//console.log(i,j,"media",media,"cost", cost, "costoAnterior",costoAnterior, arregloLotePedido5);
 
 
@@ -541,12 +611,46 @@ function heuristica7()
 		arregloLotePedido7.push(0);
 	}
 
+	//Llena el arreglo fk
 	for (var i = 0; i < num; i++) 
 	{
 		fk.push(0);
 	}
+
+	for(var i=0; i<num; i++)
+	{
+		if(i>0)
+		{
+
+		}
+
+	}
+
+
+
+
 }
 
+
+//Calcula el costo de mantener desde el periodo i-1 hasta el periodo j
+function calcularCostoMantenerEnIHastaJ( i,  j)
+{
+	var costoM= 0;
+	//console.log(i,j, costoM, isNaN(costoM));
+	for(var k=j-1; k>i; k--)
+	{
+		//console.log("for", k);
+		for(var l=i; l<num && l!=k; l++)
+		{
+			//console.log("for2", l, rn[k], h[l], rn[k]*h[l]);
+			costoM+=rn[k]*h[l]
+
+		}
+		
+	}
+	//console.log(i,j,"costoM ",costoM);
+	return costoM;
+}
 
 //Calcula el costo de mantener desde el periodo i-1 hasta el periodo j
 function calcularCostoMantenerEnIHastaJ( i,  j)
