@@ -60,6 +60,8 @@ var arregloInventario7;
 var costoTotal7;
 var costoPedir7;
 var costoMantener7;
+var kLead;
+var cLead;
 
 
 // Se llama desde el botón
@@ -67,7 +69,10 @@ var costoMantener7;
 
 function run()
 {
-	loadA();
+	//loadA();
+
+	loadDummy();
+
 
 	console.log(num);
 	console.log(d);
@@ -80,9 +85,9 @@ function run()
 
 
 	requerimientoNeto();
-	//heuristica4();
-	//calcularCostoMantenerEnIHastaJ(0,3);
-	heuristica6();
+	heuristica7();
+	//calcularCostoTotal(0,2);
+	//heuristica6();
 }
 
 //Funciones
@@ -90,14 +95,14 @@ function run()
 //Cargar datos
 function loadDummy()
 {
-	num = 6;
-	d = [40,60,70,20,90,160]; 
-	rp = [0,0,0,0,0,0];
-	ss = [0,0,0,0,0,0];
+	num = 4;
+	d = [40,100,250,80]; 
+	rp = [0,0,0,0];
+	ss = [0,0,0,0];
 	t = 2;
-	k = [300,300,300,300,300,300]; 
-	h = [2,2,2,2,2,2]; 
-	c = [10,10,10,10,10,10]; 
+	k = [100,150,100,50]; 
+	h = [1,1,2,2]; 
+	c = [10,10,5,5]; 
 }
 
 function loadA()
@@ -594,16 +599,28 @@ function heuristica6()
 //Política Wagner Whitin
 function heuristica7()
 {
-	var costoAnterior=0;
-	var cantidadAnterior=0;
+
+
 	var costoMantener=[];
 	arregloLotePedido7=[];
 	var fk=[];
+	var tiempoPed=[];
+	var kLead=[];
+	var cLead=[];
+
+
 
 	for (var i = 0; i < num; i++) 
 	{
 		costoMantener.push(0);
 	}
+
+	for (var i = 0; i < num; i++) 
+	{
+		tiempoPed.push(0);
+	}
+
+	
 
 	//Llena el arreglo de lote pedido 7 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
@@ -614,19 +631,57 @@ function heuristica7()
 	//Llena el arreglo fk
 	for (var i = 0; i < num; i++) 
 	{
+		console.log("llena fk", i);
 		fk.push(0);
 	}
 
-	for(var i=0; i<num; i++)
+	//ALgoritmo para elegir fk
+	for (var i = 1; i <= num; i++) 
 	{
-		if(i>0)
+		var min= 999999999;
+		for(j=0; j<i; j++)
 		{
+			var actual=fk[j]+calcularCostoTotal(j,i);
+			
+			console.log(j,i,"costoTotal ",actual);			
 
+			var tiempo=0;
+			
+			if(actual<=min)
+			{
+				tiempo=j;
+				min=actual;
+			}
+
+			if(j==i-1)
+			{
+				fk[i]=min;
+				tiempoPed[tiempo]=1;
+			}
 		}
+	}
 
+	//Llena el arreglo lote pedido 6
+	for (var i = 0; i < num; i++) 
+	{
+		var pedir=0;
+		if(tiempoPed[i]!=0)
+		{
+			console.log("entro pero no hago nada");
+			for (var j = i; j < num; j++) 
+			{
+				if(j!=i && tiempoPed[j]!=0)
+				{
+					break;
+				}
+				arregloLotePedido7[i]+=rn[j];
+			}
+		}
+		
 	}
 
 
+	console.log("fks", fk, "tiempos de pedido", tiempoPed, "pedido", arregloLotePedido7);
 
 
 }
@@ -652,22 +707,31 @@ function calcularCostoMantenerEnIHastaJ( i,  j)
 	return costoM;
 }
 
-//Calcula el costo de mantener desde el periodo i-1 hasta el periodo j
-function calcularCostoMantenerEnIHastaJ( i,  j)
+//Calcula el costo de ordenar y mantener desde el periodo i-1 hasta el periodo j
+//Ejemplo: calcular C13 es i=0, j=2
+function calcularCostoTotal( i,  j)
 {
+	console.log("Calculando el costo total");
 	var costoM= 0;
-	//console.log(i,j, costoM, isNaN(costoM));
-	for(var k=j-1; k>i; k--)
+	//console.log(i,j, costoM, isNaN(costoM))
+	if(i+t<j)
 	{
-		//console.log("for", k);
-		for(var l=i; l<num && l!=k; l++)
-		{
-			//console.log("for2", l, rn[k], h[l], rn[k]*h[l]);
-			costoM+=rn[k]*h[l]
-
-		}
-		
+		costoM=calcularCostoMantenerEnIHastaJ(i+t,j)+k[i];
+	}else
+	{
+		costoM=calcularCostoMantenerEnIHastaJ(i,j)+k[i];
 	}
+	
+
+	//console.log(calcularCostoMantenerEnIHastaJ(i,j));
+
+	for(var l=i; l<j; l++)
+	{
+		//console.log("cVariable", rn[l], c[i]);
+		costoM+=rn[l]*c[i];
+
+	}
+
 	//console.log(i,j,"costoM ",costoM);
 	return costoM;
 }
