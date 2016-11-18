@@ -40,6 +40,9 @@ function generarCasillas() {
 			}
 		}
 	});
+
+	document.getElementById('dataEntrada1').scrollIntoView();
+
 }
 
 function generarHorizontes() {
@@ -63,6 +66,9 @@ function generarHorizontes() {
 });
 
 //T1
+
+	document.getElementById('dataResultados1').scrollIntoView();
+
 	$('#t1 tr').each(function()
 	{
 
