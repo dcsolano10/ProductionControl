@@ -69,9 +69,9 @@ var cLead;
 
 function run()
 {
-	//loadA();
+	loadA();
 
-	loadDummy();
+	//loadDummy();
 
 
 	console.log(num);
@@ -83,9 +83,18 @@ function run()
 	console.log(t);
 	console.log(rp);
 
-
 	requerimientoNeto();
+
+	heuristica1();
+	heuristica2();
+	heuristica3();
+	heuristica4();
+	heuristica5();
+	heuristica6();
 	heuristica7();
+
+	
+	//heuristica7();
 	//calcularCostoTotal(0,2);
 	//heuristica6();
 }
@@ -169,9 +178,21 @@ function loadA()
 function requerimientoNeto()
 {
 	rn=[];
-	for (var i = 0; i < num; i++) 
+	for (var i = 0; i < num+t; i++) 
 	{
-		rn[i]=Math.ceil(d[i]-rp[i]+ss[i]*d[i]);
+		rn[i]=Math.ceil(d[i]-rp[i]+ss[i]);
+		if(i>0)
+		{
+			rn[i]-=ss[i-1];
+		}
+	};
+
+	for (var i = 0; i < num+t; i++) 
+	{
+		if(rn[i]<0)
+		{
+			rn[i]=0;
+		}
 	};
 	console.log(rn);
 	console.log("acaba de imprimir rn");
@@ -193,19 +214,19 @@ function heuristica1()
 	}
 
 	//Agrega el requerimiento neto al lote de pedido 1 (i=0 es el periodo -(t+1))
-	for (var i = 0; i < num; i++) 
+	for (var i = 0; i < num+t; i++) 
 	{
-		arregloLotePedido1[i]=rn[i];
+		if(i+t<num+t)
+		{
+		arregloLotePedido1[i]=rn[i+t];
+		}
 	}
-
-	console.log(arregloLotePedido1);
 
 	//Llena de 0's el inventario ya que en lote x lote el inventario es 0
 	for (var i = 0; i < num+t; i++) 
 	{
 		arregloInventario1.push(0);
 	}
-	console.log(arregloInventario1);
 }
 
 //Heurística EOQ
@@ -220,12 +241,11 @@ function heuristica2()
 	arregloInventario2=[];
 	
 	//Calcular tasa del requerimiento neto
-	for (var i = 0; i <num; i++) 
+	for (var i = t; i <num+t; i++) 
 	{
 		tasa=tasa+rn[i];
 	}
 	tasa=tasa/num;
-	console.log(tasa);
 
 	//Calcular k promedio
 	for(var i=0; i<num;i++)
@@ -252,6 +272,8 @@ function heuristica2()
 	eoq=Math.sqrt((2*kmedio*tasa)/hmedio);
 	eoq=Math.round(eoq);
 
+	//console.log(tasa,kmedio,cmedio,hmedio,"eoq",eoq);
+
 	//Llena el arreglo de lote pedido 2 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
 	{
@@ -264,34 +286,46 @@ function heuristica2()
 		arregloInventario2.push(0);
 	}
 
-	for (var i = 0; i < num; i++) 
+	for (var i = 0; i < num+t; i++) 
 	{
+		//console.log("inv", arregloInventario2);
+		//console.log("lot", arregloLotePedido2);
 		//Si estoy en el periodo 0 (con respecto a num+t)
 		if(i==0)
 		{
-			arregloLotePedido2[i]=Math.max(eoq, rn[i]);
-			arregloInventario2[i]=arregloLotePedido2[i]-rn[i];
+			arregloLotePedido2[i]=Math.max(eoq, rn[i+t]);
+			arregloInventario2[i+t]+=arregloLotePedido2[i]-rn[i+t];
 
-		}else if(i<num-1){ //Estoy en un periodo que no es 0 y no es el último
+
+		}else if(i+1<num)
+		{ 
+			//console.log("i",i,arregloInventario2[i+t-1]);
 			//Si tengo en inventario lo que necesito
-			if(arregloInventario2[i-1]-rn[i]>=0)
+			if(arregloInventario2[i+t-1]-rn[i+t]>=0)
 			{
+
 				//no pido nada
 				arregloLotePedido2[i]=0;
-				arregloInventario2[i]=arregloInventario2[i-1]-rn[i];
+				arregloInventario2[i]+=arregloInventario2[i-1];
 			}else{ //si tengo que pedir
-				arregloLotePedido2[i]=Math.max(eoq, rn[i]-arregloInventario2[i-1]);
-				arregloInventario2[i]=arregloLotePedido2[i]-rn[i]+arregloInventario2[i-1];
+				arregloLotePedido2[i]=Math.max(eoq, rn[i+t]-arregloInventario2[i+t-1],0);
+				arregloInventario2[i+t]=arregloLotePedido2[i]-rn[i+t]+arregloInventario2[i+t-1];
 			}
 
-		}else{//Estoy en el último periodo
-			arregloLotePedido2[i]=rn[i]-arregloInventario2[i-1];
-			arregloInventario2[i]=0;
+		}else if(i+1==num)
+		{
+			//console.log("entre ala ultimo");
+			arregloLotePedido2[i]=Math.max(rn[i+t]-arregloInventario2[i+t-1],0);
+			arregloInventario2[i+t]=arregloLotePedido2[i]-rn[i+t]+arregloInventario2[i+t-1];
+		}
+		else{//Estoy en los últimos periodos
+			arregloLotePedido2[i]=0;
+			arregloInventario2[i]=arregloInventario2[i-1]+arregloLotePedido2[i-t]-rn[i];
 		}
 		
 	}
-	console.log(arregloLotePedido2);
-	console.log(arregloInventario2);
+	//console.log(arregloLotePedido2);
+	//console.log(arregloInventario2);
 }
 
 //Heurística 3 política POQ
@@ -307,7 +341,7 @@ function heuristica3()
 	var tiempociclo=0;
 
 	//Calcular tasa del requerimiento neto
-	for (var i = 0; i <num; i++) 
+	for (var i = t; i <num+t; i++) 
 	{
 		tasa=tasa+rn[i];
 	}
@@ -355,18 +389,33 @@ function heuristica3()
 	tiempociclo=eoq/tasa;
 	tiempociclo=Math.round(tiempociclo);
 
-	for (var i = 0; i < num; i++) 
+	for (var i = 0; i < num+t; i++) 
 	{
 		//Debo ordenar y quedan periodos adelante
+	if(i>=num)
+	{
+		arregloLotePedido3[i]=0;
+	}
+
 		if(i%tiempociclo==0 )
 		{
+			//console.log("timo",tiempociclo,i);
 			for(j=0; j<tiempociclo; j++)
 			{
+				//console.log(i,j,"j")
 				try{
-					arregloLotePedido3[i]+=rn[i+j];
+					if(i+j<num)
+					{
+					arregloLotePedido3[i]+=rn[i+j+t];
+					//console.log(arregloLotePedido3);
+					}else{
+						//console.log("mayores",i,j);
+						break;
+					}
 				}catch(err){
+					//console.log(i,j,"error")
 					arregloLotePedido3[i]=0;
-					console.log("acabe modafoca")
+
 				}
 				
 				
@@ -377,19 +426,16 @@ function heuristica3()
 	}
 
 	//Calcular invetario
-	for (var i = 0; i < num; i++) 
+	for (var i = 0; i < num+t; i++) 
 	{
-		if(i>0)
+		if(i>=t)
 		{
-			arregloInventario3[i]=arregloLotePedido3[i]-rn[i]+arregloInventario3[i-1];
-		}else{
-			arregloInventario3[i]=arregloLotePedido3[i]-rn[i];
-
+			arregloInventario3[i]=arregloLotePedido3[i-t]-rn[i]+arregloInventario3[i-1];
 		}
 	}
 
-	console.log(arregloLotePedido3);
-	console.log(arregloInventario3);
+	//console.log(arregloLotePedido3);
+	//console.log(arregloInventario3);
 
 }
 
@@ -399,10 +445,17 @@ function heuristica4()
 	var costoAnterior=0;
 	var costoMantener=[];
 	arregloLotePedido4=[];
+	arregloInventario4=[];
 
 	for (var i = 0; i < num; i++) 
 	{
 		costoMantener.push(0);
+	}
+
+	//Llena el arreglo de inventario 4 de 0's del tamaño lead time + tamaño demandas 
+	for (var i = 0; i < num+t; i++) 
+	{
+		arregloInventario4.push(0);
 	}
 
 	//Llena el arreglo de lote pedido 4 de 0's del tamaño lead time + tamaño demandas 
@@ -453,8 +506,10 @@ function heuristica4()
 
 		}
 
+		calcularInventario4();
+
 		console.log(arregloLotePedido4);
-	}
+}
 
 //Heurística 5: Política Silver Meal
 function heuristica5()
@@ -462,6 +517,13 @@ function heuristica5()
 	var costoAnterior=0;
 	var costoMantener=[];
 	arregloLotePedido5=[];
+	arregloInventario5=[];
+
+	//Llena el arreglo de inventario 5 de 0's del tamaño lead time + tamaño demandas 
+	for (var i = 0; i < num+t; i++) 
+	{
+		arregloInventario5.push(0);
+	}
 
 	for (var i = 0; i < num; i++) 
 	{
@@ -531,6 +593,13 @@ function heuristica6()
 	var cantidadAnterior=0;
 	var costoMantener=[];
 	arregloLotePedido6=[];
+	arregloInventario6=[];
+
+	//Llena el arreglo de inventario 6 de 0's del tamaño lead time + tamaño demandas 
+	for (var i = 0; i < num+t; i++) 
+	{
+		arregloInventario6.push(0);
+	}
 
 	for (var i = 0; i < num; i++) 
 	{
@@ -607,7 +676,14 @@ function heuristica7()
 	var tiempoPed=[];
 	var kLead=[];
 	var cLead=[];
+	arregloInventario7=[];
 
+
+	//Llena el arreglo de inventario 7 de 0's del tamaño lead time + tamaño demandas 
+	for (var i = 0; i < num+t; i++) 
+	{
+		arregloInventario7.push(0);
+	}
 
 
 	for (var i = 0; i < num; i++) 
@@ -734,6 +810,14 @@ function calcularCostoTotal( i,  j)
 
 	//console.log(i,j,"costoM ",costoM);
 	return costoM;
+}
+
+function calcularInventario4()
+{
+	for(i=1; i<num+t; i++)
+	{
+		arregloInventario4[i]=arregloInventario4[i-1]+arregloLotePedido4[i]-rn[i];
+	}
 }
 
 

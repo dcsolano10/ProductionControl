@@ -22,9 +22,9 @@ function generarCasillas() {
 	$('#tablaParametros tr').each(function()
 	{
 
-		var columna = 1;
+		var columna = 1-leadTimeA;
 
-		for (var i = 0; i < numPeriodosA; i++) {
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
 
 
 			if($(this).prop("id") == 'periodos')
@@ -40,4 +40,268 @@ function generarCasillas() {
 			}
 		}
 	});
+}
+
+function generarHorizontes() {
+
+	run();
+
+	Morris.Bar({
+  element: 'bar-example',
+  data: [
+    { y: 'LxL', a: 128},
+    { y: 'EOQ', a: 123},
+    { y: 'MUC', a: 124},
+    { y: 'POQ', a: 120},
+    { y: 'PPB', a: 130},
+    { y: 'SilverMeal', a: 140},
+    { y: 'WW', a: 120}
+  ],
+  xkey: 'y',
+  ykeys: ['a'],
+  labels: ['Costo por política']
+});
+
+//T1
+	$('#t1 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t1')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t1')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t1')
+				{
+					$(this).append('<th>'+arregloLotePedido1[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t1')
+				{
+					$(this).append('<th>'+arregloInventario1[i]+'</th>');
+				}
+			}
+		}
+	});
+
+	//T2
+	$('#t2 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t2')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t2')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t2')
+				{
+					$(this).append('<th>'+arregloLotePedido2[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t2')
+				{
+					$(this).append('<th>'+arregloInventario2[i]+'</th>');
+				}
+			}
+		}
+	});
+
+	//T3
+	$('#t3 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t3')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t3')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t3')
+				{
+					$(this).append('<th>'+arregloLotePedido3[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t3')
+				{
+					$(this).append('<th>'+arregloInventario3[i]+'</th>');
+				}
+			}
+		}
+	});
+
+
+	//T4
+	$('#t4 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t4')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t4')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t4')
+				{
+					$(this).append('<th>'+arregloLotePedido4[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t4')
+				{
+					$(this).append('<th>'+arregloInventario4[i]+'</th>');
+				}
+			}
+		}
+	});
+
+
+	//T5
+	$('#t5 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t5')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t5')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t5')
+				{
+					$(this).append('<th>'+arregloLotePedido5[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t5')
+				{
+					$(this).append('<th>'+arregloInventario5[i]+'</th>');
+				}
+			}
+		}
+	});
+
+
+	//T6
+	$('#t6 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t6')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t6')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t6')
+				{
+					$(this).append('<th>'+arregloLotePedido6[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t6')
+				{
+					$(this).append('<th>'+arregloInventario6[i]+'</th>');
+				}
+			}
+		}
+	});
+
+	//T7
+	$('#t7 tr').each(function()
+	{
+
+		var columna = 1-leadTimeA;
+
+		for (var i = 0; i < numPeriodosA+leadTimeA; i++) {
+
+
+			if($(this).prop("id") == 'periodos_t7')
+			{
+				$(this).append('<th>'+columna+'</th>');
+				columna = columna + 1;
+			}
+			else
+			{
+				if($(this).prop("id") == 'rn_t7')
+				{
+					$(this).append('<th>'+rn[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'lote_t7')
+				{
+					$(this).append('<th>'+arregloLotePedido7[i]+'</th>');
+				}
+
+				if($(this).prop("id") == 'inventario_t7')
+				{
+					$(this).append('<th>'+arregloInventario7[i]+'</th>');
+				}
+			}
+		}
+	});
+
+
 }

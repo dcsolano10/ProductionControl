@@ -29,7 +29,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-            <script src="main.js"></script>
+        <script src="main.js"></script>
 
     </head>
 
@@ -233,80 +233,371 @@
                                 </div>
 
                                 <div class="col-lg-3 col-md-6">
-                                <div class="row">
-                                    <button type="button" class="btn btn-success btn-lg" onclick="generarCasillas()">Definir horizonte de planeación</button> </div>
                                     <div class="row">
-                                    <p> </p>
-                                    <p>
-                                    <button type="button" class="btn btn-danger btn-lg" onclick="reload()">Reiniciar</button>
-                                    </p>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-                            <!-- /.row -->
-
-                            <!-- /.row -->
-
-                            <div class="col-lg-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading">
-                                        <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Parámetros por periodo</h3>
-                                    </div>
-                                    <div class="panel-body">
-                                        <div class="table-responsive">
-                                            <table class="table table-hover" id="tablaParametros">
-                                                <thead>
-                                                    <tr id="periodos">
-                                                        <th></th>
-
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr id="demanda">
-                                                        <th>Demanda</th>
-
-                                                    </tr>
-
-                                                    <tr id="recepciones">
-                                                        <th>Recepciones programadas</th>
-   
-
-                                                    </tr>
-                                                    <tr id="inventario">
-                                                        <th>Inventario de seguridad</th>
-
-
-                                                    </tr>
-                                                    <tr id="costoPedir">
-                                                        <th>Costo de pedir</th>
-
-
-                                                    </tr>
-                                                    <tr id="costoMantener">
-                                                        <th>Costo de mantener</th>
-
-
-
-                                                    </tr>
-                                                    <tr id="costoUnitario">
-                                                        <th>Costo unitario</th>
-
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                        <button type="button" class="btn btn-success btn-lg" onclick="generarCasillas()">Definir horizonte de planeación</button> </div>
+                                        <div class="row">
+                                            <p> </p>
+                                            <p>
+                                                <button type="button" class="btn btn-danger btn-lg" onclick="reload()">Reiniciar</button>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                                    <div class="col-lg-6">
-                                    <button type="button" class="btn btn-warning btn-lg" onclick="run()">Analizar horizonte</button>
+
+
+                                <!-- /.row -->
+
+                                <!-- /.row -->
+
+                                <div class="col-lg-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Parámetros por periodo</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="tablaParametros">
+                                                    <thead>
+                                                        <tr id="periodos">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="demanda">
+                                                            <th>Demanda</th>
+
+                                                        </tr>
+
+                                                        <tr id="recepciones">
+                                                            <th>Recepciones programadas</th>
+
+
+                                                        </tr>
+                                                        <tr id="inventario">
+                                                            <th>Inventario de seguridad</th>
+
+
+                                                        </tr>
+                                                        <tr id="costoPedir">
+                                                            <th>Costo de pedir</th>
+
+
+                                                        </tr>
+                                                        <tr id="costoMantener">
+                                                            <th>Costo de mantener</th>
+
+
+
+                                                        </tr>
+                                                        <tr id="costoUnitario">
+                                                            <th>Costo unitario</th>
+
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
+                                                               <div class="col-lg-6">
+                                    <button type="button" class="btn btn-warning btn-lg" onclick="generarHorizontes()">Analizar horizonte</button>
+                                    <p> </p>
+                                </div>
+                                </div>
+
+
+     
+                                <!-- /.row -->
+
+                                <div class="row">
+                                <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Política Lote x lote</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t1">
+                                                    <thead>
+                                                        <tr id="periodos_t1">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+                                                         <tr id="rn_t1">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t1">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t1">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+                                 <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Política basada en EOQ</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t2">
+                                                    <thead>
+                                                        <tr id="periodos_t2">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="rn_t2">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t2">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t2">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+
+                                <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Política POQ</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t3">
+                                                    <thead>
+                                                        <tr id="periodos_t3">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="rn_t3">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t3">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t3">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+
+
+                                <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Política PPB</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t4">
+                                                    <thead>
+                                                        <tr id="periodos_t4">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="rn_t4">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t4">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t4">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+
+                                <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Política Silver Meal</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t5">
+                                                    <thead>
+                                                        <tr id="periodos_t5">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="rn_t5">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t5">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t5">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+
+
+                                <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Política MCU</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t6">
+                                                    <thead>
+                                                        <tr id="periodos_t6">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                         <tr id="rn_t6">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t6">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t6">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+
+                                <!--De aca -->
+                                   <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Wagner Whitin</h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover" id="t7">
+                                                    <thead>
+                                                        <tr id="periodos_t7">
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr id="rn_t7">
+                                                            <th>Requerimiento neto</th>
+
+                                                        </tr>
+                                                        <tr id="lote_t7">
+                                                            <th>Lote de pedido</th>
+
+                                                        </tr>
+
+                                                        <tr id="inventario_t7">
+                                                            <th>Inventario</th>
+
+
+                                                        </tr>   
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- hasta aca -->
+
+                                <div class="col-lg-6">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title"><i class="fa fa-square fa-fw"></i> Costos por heurística</h3>
+                                        </div>
+                                        <div class="panel-body">
+
+                                          <div id="bar-example"></div>
+
+                                        </div>
+                                    </div>
+                                </div>                  
+
+
+
+
+                            </div>
                         </div>
-                        <!-- /.row -->
+
 
                     </div>
                     <!-- /.container-fluid -->
