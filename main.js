@@ -71,7 +71,7 @@ function run()
 {
 	loadA();
 
-	//loadDummy();
+	loadDummy();
 
 
 	console.log(num);
@@ -87,11 +87,11 @@ function run()
 
 	heuristica1();
 	heuristica2();
-	heuristica3();
-	heuristica4();
-	heuristica5();
-	heuristica6();
-	heuristica7();
+	//heuristica3();
+	//heuristica4();
+	//heuristica5();
+	//heuristica6();
+	//heuristica7();
 
 	
 	//heuristica7();
@@ -104,14 +104,14 @@ function run()
 //Cargar datos
 function loadDummy()
 {
-	num = 4;
-	d = [40,100,250,80]; 
-	rp = [0,0,0,0];
-	ss = [0,0,0,0];
-	t = 2;
-	k = [100,150,100,50]; 
-	h = [1,1,2,2]; 
-	c = [10,10,5,5]; 
+	num = 6;
+	d = [40,60,70,20,90,160]; 
+	rp = [0,0,0,0,0,0];
+	ss = [0,0,0,0,0,0];
+	t = 0;
+	k = [300,300,300,300,300,300]; 
+	h = [2,2,2,2,2,2]; 
+	c = [10,10,10,10,10,10]; 
 }
 
 function loadA()
@@ -272,7 +272,7 @@ function heuristica2()
 	eoq=Math.sqrt((2*kmedio*tasa)/hmedio);
 	eoq=Math.round(eoq);
 
-	//console.log(tasa,kmedio,cmedio,hmedio,"eoq",eoq);
+	console.log(tasa,kmedio,cmedio,hmedio,"eoq",eoq);
 
 	//Llena el arreglo de lote pedido 2 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
@@ -288,8 +288,8 @@ function heuristica2()
 
 	for (var i = 0; i < num+t; i++) 
 	{
-		//console.log("inv", arregloInventario2);
-		//console.log("lot", arregloLotePedido2);
+		console.log("inv", arregloInventario2);
+		console.log("lot", arregloLotePedido2);
 		//Si estoy en el periodo 0 (con respecto a num+t)
 		if(i==0)
 		{
@@ -299,14 +299,14 @@ function heuristica2()
 
 		}else if(i+1<num)
 		{ 
-			//console.log("i",i,arregloInventario2[i+t-1]);
+			console.log("i",i,arregloInventario2[i+t-1]);
 			//Si tengo en inventario lo que necesito
 			if(arregloInventario2[i+t-1]-rn[i+t]>=0)
 			{
 
 				//no pido nada
 				arregloLotePedido2[i]=0;
-				arregloInventario2[i]+=arregloInventario2[i-1];
+				arregloInventario2[i]+=arregloInventario2[i-1]-rn[i+t];
 			}else{ //si tengo que pedir
 				arregloLotePedido2[i]=Math.max(eoq, rn[i+t]-arregloInventario2[i+t-1],0);
 				arregloInventario2[i+t]=arregloLotePedido2[i]-rn[i+t]+arregloInventario2[i+t-1];
@@ -314,7 +314,7 @@ function heuristica2()
 
 		}else if(i+1==num)
 		{
-			//console.log("entre ala ultimo");
+			console.log("entre ala ultimo");
 			arregloLotePedido2[i]=Math.max(rn[i+t]-arregloInventario2[i+t-1],0);
 			arregloInventario2[i+t]=arregloLotePedido2[i]-rn[i+t]+arregloInventario2[i+t-1];
 		}
@@ -324,8 +324,8 @@ function heuristica2()
 		}
 		
 	}
-	//console.log(arregloLotePedido2);
-	//console.log(arregloInventario2);
+	console.log(arregloLotePedido2);
+	console.log(arregloInventario2);
 }
 
 //Heurística 3 política POQ
