@@ -74,21 +74,21 @@ function run()
 	loadDummy();
 
 
-	console.log(num);
-	console.log(d);
-	console.log(k);
-	console.log(h);
-	console.log(c);
-	console.log(ss);
-	console.log(t);
-	console.log(rp);
+	//console.log(num);
+	//console.log(d);
+	//console.log(k);
+	//console.log(h);
+	//console.log(c);
+	//console.log(ss);
+	//console.log(t);
+	//console.log(rp);
 
 	requerimientoNeto();
 
 	heuristica1();
 	heuristica2();
-	//heuristica3();
-	//heuristica4();
+	heuristica3();
+	heuristica4();
 	//heuristica5();
 	//heuristica6();
 	//heuristica7();
@@ -104,14 +104,14 @@ function run()
 //Cargar datos
 function loadDummy()
 {
-	num = 6;
-	d = [40,60,70,20,90,160]; 
-	rp = [0,0,0,0,0,0];
-	ss = [0,0,0,0,0,0];
-	t = 0;
-	k = [300,300,300,300,300,300]; 
-	h = [2,2,2,2,2,2]; 
-	c = [10,10,10,10,10,10]; 
+	num = 8;
+	d = [0,21,6,8,11,25,21,24,25]; 
+	rp = [0,0,0,0,0,0,0,0,0];
+	ss = [0,0,0,0,0,0,0,0,0];
+	t = 1;
+	k = [3900,3400,2900,4000,3300,3600,3400,3200,2800]; 
+	h = [77,77,72,50,75,73,63,65,68]; 
+	c = [692,700,785,695,713,799,716,665,731]; 
 }
 
 function loadA()
@@ -248,31 +248,31 @@ function heuristica2()
 	tasa=tasa/num;
 
 	//Calcular k promedio
-	for(var i=0; i<num;i++)
+	for(var i=0; i<num+t;i++)
 	{
 		kmedio=kmedio+k[i];
 	}
-	kmedio=kmedio/num;
+	kmedio=kmedio/(num+t);
 
 	//Calcular c medio
-	for(var i=0; i<num;i++)
+	for(var i=0; i<num+t;i++)
 	{
 		cmedio=cmedio+c[i];
 	}
-	cmedio=cmedio/num;
+	cmedio=cmedio/(num+t);
 
 	//Calcular h medio
-	for(var i=0; i<num;i++)
+	for(var i=0; i<num+t;i++)
 	{
 		hmedio=hmedio+h[i];
 	}
-	hmedio=hmedio/num;
+	hmedio=hmedio/(num+t);
 
 	//Calcular EOQ
 	eoq=Math.sqrt((2*kmedio*tasa)/hmedio);
 	eoq=Math.round(eoq);
 
-	console.log(tasa,kmedio,cmedio,hmedio,"eoq",eoq);
+	//console.log(tasa,kmedio,cmedio,hmedio,"eoq",eoq);
 
 	//Llena el arreglo de lote pedido 2 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
@@ -288,35 +288,31 @@ function heuristica2()
 
 	for (var i = 0; i < num+t; i++) 
 	{
-		console.log("inv", arregloInventario2);
-		console.log("lot", arregloLotePedido2);
 		//Si estoy en el periodo 0 (con respecto a num+t)
+
 		if(i==0)
 		{
 			arregloLotePedido2[i]=Math.max(eoq, rn[i+t]);
 			arregloInventario2[i+t]+=arregloLotePedido2[i]-rn[i+t];
 
 
-		}else if(i+1<num)
+		}else if(i<num-t)
 		{ 
-			console.log("i",i,arregloInventario2[i+t-1]);
+			arregloInventario2[i]=Math.max(arregloLotePedido2[i-t]-rn[i]+arregloInventario2[i-1],0);
 			//Si tengo en inventario lo que necesito
-			if(arregloInventario2[i+t-1]-rn[i+t]>=0)
+			if(arregloInventario2[i]-rn[i+t]>=0)
 			{
-
 				//no pido nada
 				arregloLotePedido2[i]=0;
-				arregloInventario2[i]+=arregloInventario2[i-1]-rn[i+t];
+				
 			}else{ //si tengo que pedir
 				arregloLotePedido2[i]=Math.max(eoq, rn[i+t]-arregloInventario2[i+t-1],0);
-				arregloInventario2[i+t]=arregloLotePedido2[i]-rn[i+t]+arregloInventario2[i+t-1];
 			}
 
-		}else if(i+1==num)
+		}else if(i==num-t)
 		{
-			console.log("entre ala ultimo");
-			arregloLotePedido2[i]=Math.max(rn[i+t]-arregloInventario2[i+t-1],0);
-			arregloInventario2[i+t]=arregloLotePedido2[i]-rn[i+t]+arregloInventario2[i+t-1];
+			arregloInventario2[i]=Math.max(arregloLotePedido2[i-t]-rn[i]+arregloInventario2[i-1],0);
+			arregloLotePedido2[i]=Math.max(rn[i+t]-arregloInventario2[i],0);
 		}
 		else{//Estoy en los últimos periodos
 			arregloLotePedido2[i]=0;
@@ -324,8 +320,8 @@ function heuristica2()
 		}
 		
 	}
-	console.log(arregloLotePedido2);
-	console.log(arregloInventario2);
+	//console.log(arregloLotePedido2);
+	//console.log(arregloInventario2);
 }
 
 //Heurística 3 política POQ
@@ -466,35 +462,37 @@ function heuristica4()
 
 	for (var i = 0; i < num; i++) 
 		{	costoAnterior=0;
-			arregloLotePedido4[i]+=rn[i];
+			arregloLotePedido4[i]+=rn[i+t];
+
+			console.log(i,j,arregloLotePedido4);
+
 			for (var j = i+1; j <= num; j++) 
 			{
-				var cost=calcularCostoMantenerEnIHastaJ(i,j);
+				var cost=calcularCostoMantenerEnIHastaJ(i+t,j);
 
-				if(j==num)
+
+
+				if(i+1==j && j==num) //Acabó
 				{
-					if(Math.abs(cost-k[i])<=Math.abs(k[i]-costoAnterior))
-					{
-						i=j-1;
-						break;
-
-					}else{
-						i=j-2;
-						arregloLotePedido4[i-1]-=rn[j-1];
-						break;
-					}
+					//console.log("ii",i,"jj",j,arregloLotePedido4);
+					break;
 				}
 
 				if(cost>=k[i])
 				{
+					//console.log("me pase",i,j);
 					if(Math.abs(cost-k[i])<=Math.abs(k[i]-costoAnterior))
 					{
-						i=j-1;
+						//arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j];
+						//console.log("el nuevo es mejor", arregloLotePedido4);
+						arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j];
+						i=j-1-t;
 						break;
 
 					}else{
-						i=j-1;
-						arregloLotePedido4[i]-=rn[j]
+						//console.log("el anterior era mejor",arregloLotePedido4,i,j,rn[j],rn);
+						arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j]-rn[j-1];
+						i=j-2-t;
 						break;
 					}
 				}else{
@@ -508,7 +506,7 @@ function heuristica4()
 
 		calcularInventario4();
 
-		console.log(arregloLotePedido4);
+		//console.log(arregloLotePedido4);
 }
 
 //Heurística 5: Política Silver Meal
@@ -770,16 +768,16 @@ function calcularCostoMantenerEnIHastaJ( i,  j)
 	//console.log(i,j, costoM, isNaN(costoM));
 	for(var k=j-1; k>i; k--)
 	{
-		//console.log("for", k);
+		console.log("for", k);
 		for(var l=i; l<num && l!=k; l++)
 		{
-			//console.log("for2", l, rn[k], h[l], rn[k]*h[l]);
+			console.log("for2", l, rn[k], h[l], rn[k]*h[l]);
 			costoM+=rn[k]*h[l]
 
 		}
 		
 	}
-	//console.log(i,j,"costoM ",costoM);
+	console.log("i",i,"j",j,"costoM ",costoM);
 	return costoM;
 }
 
@@ -816,7 +814,7 @@ function calcularInventario4()
 {
 	for(i=1; i<num+t; i++)
 	{
-		arregloInventario4[i]=arregloInventario4[i-1]+arregloLotePedido4[i]-rn[i];
+		arregloInventario4[i]=arregloInventario4[i-1]+arregloLotePedido4[i-t]-rn[i];
 	}
 }
 
