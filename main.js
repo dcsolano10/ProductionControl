@@ -71,7 +71,7 @@ function run()
 {
 	loadA();
 
-	loadDummy();
+	//loadDummy();
 
 
 	//console.log(num);
@@ -90,8 +90,8 @@ function run()
 	heuristica3();
 	heuristica4();
 	heuristica5();
-	//heuristica6();
-	//heuristica7();
+	heuristica6();
+	heuristica7();
 
 	
 	//heuristica7();
