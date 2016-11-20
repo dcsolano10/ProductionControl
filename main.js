@@ -71,7 +71,7 @@ function run()
 {
 	loadA();
 
-	//loadDummy();
+	loadDummy();
 
 
 	//console.log(num);
@@ -90,8 +90,8 @@ function run()
 	heuristica3();
 	heuristica4();
 	heuristica5();
-	heuristica6();
-	heuristica7();
+	//heuristica6();
+	//heuristica7();
 
 	
 	//heuristica7();
@@ -517,15 +517,15 @@ function heuristica5()
 	arregloLotePedido5=[];
 	arregloInventario5=[];
 
+	for (var i = 0; i < num; i++) 
+	{
+		costoMantener.push(0);
+	}
+
 	//Llena el arreglo de inventario 5 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
 	{
 		arregloInventario5.push(0);
-	}
-
-	for (var i = 0; i < num; i++) 
-	{
-		costoMantener.push(0);
 	}
 
 	//Llena el arreglo de lote pedido 5 de 0's del tamaño lead time + tamaño demandas 
@@ -535,53 +535,51 @@ function heuristica5()
 	}
 
 	for (var i = 0; i < num; i++) 
-		{	costoAnterior=0;
+		{	costoAnterior=9999999999999;
+			arregloLotePedido5[i]+=rn[i+t];
 
+			console.log(i,j,arregloLotePedido5);
 
-			for (var j = i; j <= num; j++) 
+			for (var j = i+1; j <= num; j++) 
 			{
-				var cost=0;
+				console.log("ij",i,j,arregloLotePedido5);
 
-				cost=calcularCostoMantenerEnIHastaJ(i,j+1);
+				var cost=calcularCostoMantenerEnIHastaJ(i+t,j+1);
 
-				var media=0;
-				if(j==i)
+				cost=(cost+k[i])/(j-i);
+
+				console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
+
+				if(i+1==j && j==num) //Acabó
 				{
-					media=(cost+k[i])/1;
-
-				}else{
-					media=(cost+k[i])/(j-i+1);
+					console.log("ii",i,"jj",j,arregloLotePedido5);
+					break;
 				}
 
-			//console.log(i,j,"media",media,"cost", cost, "costoAnterior",costoAnterior, arregloLotePedido5);
-
-
-			if(media<=costoAnterior || costoAnterior==0)
-			{
-
-				costoAnterior=media;
-				arregloLotePedido5[i]+=rn[j];
-				//console.log("agrego",rn[j],j);
-			}
-			else
-			{
-				if(j!=num)
+				if(cost>=costoAnterior)
 				{
-					i=j;
-					j=j-1;
+					
+						console.log("el anterior era mejor",arregloLotePedido5,i,j);
+						//arregloLotePedido5[i]=arregloLotePedido5[i]-rn[j]-rn[j-1];
+						i=j-1-t;
+						break;
+			
 				}else{
-					j=num;
-					i=num;
+					costoAnterior=cost;
+					if(j>i+t)
+					{
+						arregloLotePedido5[i]+=rn[j];
+					}
+					
 				}
-				
-				costoAnterior=0;
 			}
+
+
 		}
 
-		
-	}
+		calcularInventario5();
 
-	console.log(arregloLotePedido5);
+		console.log(arregloLotePedido5);
 }
 
 //Política Mínimo Costo Unitario (MCU)
@@ -815,6 +813,14 @@ function calcularInventario4()
 	for(i=1; i<num+t; i++)
 	{
 		arregloInventario4[i]=arregloInventario4[i-1]+arregloLotePedido4[i-t]-rn[i];
+	}
+}
+
+function calcularInventario5()
+{
+	for(i=1; i<num+t; i++)
+	{
+		arregloInventario5[i]=arregloInventario5[i-1]+arregloLotePedido5[i-t]-rn[i];
 	}
 }
 
