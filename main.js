@@ -538,28 +538,28 @@ function heuristica5()
 		{	costoAnterior=9999999999999;
 			arregloLotePedido5[i]+=rn[i+t];
 
-			console.log(i,j,arregloLotePedido5);
+			//console.log(i,j,arregloLotePedido5);
 
 			for (var j = i+1; j <= num; j++) 
 			{
-				console.log("ij",i,j,arregloLotePedido5);
+				//console.log("ij",i,j,arregloLotePedido5);
 
 				var cost=calcularCostoMantenerEnIHastaJ(i+t,j+1);
 
 				cost=(cost+k[i])/(j-i);
 
-				console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
+				//console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
 
 				if(i+1==j && j==num) //Acabó
 				{
-					console.log("ii",i,"jj",j,arregloLotePedido5);
+					//console.log("ii",i,"jj",j,arregloLotePedido5);
 					break;
 				}
 
 				if(cost>=costoAnterior)
 				{
 					
-						console.log("el anterior era mejor",arregloLotePedido5,i,j);
+						//console.log("el anterior era mejor",arregloLotePedido5,i,j);
 						//arregloLotePedido5[i]=arregloLotePedido5[i]-rn[j]-rn[j-1];
 						i=j-1-t;
 						break;
@@ -579,27 +579,26 @@ function heuristica5()
 
 		calcularInventario5();
 
-		console.log(arregloLotePedido5);
+		//console.log(arregloLotePedido5);
 }
 
 //Política Mínimo Costo Unitario (MCU)
 function heuristica6()
 {
 	var costoAnterior=0;
-	var cantidadAnterior=0;
 	var costoMantener=[];
 	arregloLotePedido6=[];
 	arregloInventario6=[];
+
+	for (var i = 0; i < num; i++) 
+	{
+		costoMantener.push(0);
+	}
 
 	//Llena el arreglo de inventario 6 de 0's del tamaño lead time + tamaño demandas 
 	for (var i = 0; i < num+t; i++) 
 	{
 		arregloInventario6.push(0);
-	}
-
-	for (var i = 0; i < num; i++) 
-	{
-		costoMantener.push(0);
 	}
 
 	//Llena el arreglo de lote pedido 6 de 0's del tamaño lead time + tamaño demandas 
@@ -609,56 +608,61 @@ function heuristica6()
 	}
 
 	for (var i = 0; i < num; i++) 
-		{	costoAnterior=0;
-			cantidadAnterior=0;
+		{	costoAnterior=9999999999999;
+			arregloLotePedido6[i]+=rn[i+t];
 
+			//console.log(i,j,arregloLotePedido6);
 
-			for (var j = i; j <= num; j++) 
+			for (var j = i+1; j <= num; j++) 
 			{
-				var cost=0;
+				//console.log("ij",i,j,arregloLotePedido6);
 
-				cost=calcularCostoMantenerEnIHastaJ(i,j+1);
+				var cost=calcularCostoMantenerEnIHastaJ(i+t,j+1);
 
-
-				var media=0;
-				if(j==i)
+				if(j>i+t)
 				{
-					cantidadAnterior=rn[i];
-					media=(cost+k[i])/cantidadAnterior;
-
+					cost=(cost+k[i])/(arregloLotePedido6[i]+rn[j]);
 				}else{
-					cantidadAnterior+=rn[j];
-					media=(cost+k[i])/cantidadAnterior;
-				}
-
-			//console.log(i,j,"media",media,"cost", cost, "costoAnterior",costoAnterior, arregloLotePedido5);
-
-
-			if(media<=costoAnterior || costoAnterior==0)
-			{
-
-				costoAnterior=media;
-				arregloLotePedido6[i]+=rn[j];
-				//console.log("agrego",rn[j],j);
-			}
-			else
-			{
-				if(j!=num)
-				{
-					i=j;
-					j=j-1;
-				}else{
-					j=num;
-					i=num;
+					cost=(cost+k[i])/arregloLotePedido6[i];
 				}
 				
-				costoAnterior=0;
+
+				//console.log(i,j,arregloLotePedido6,"cost",cost,k[i],(j-i));
+
+				if(i+1==j && j==num) //Acabó
+				{
+					//console.log("ii",i,"jj",j,arregloLotePedido6);
+					break;
+				}
+
+				if(cost>=costoAnterior)
+				{
+					
+						//console.log("el anterior era mejor",arregloLotePedido6,i,j);
+						//arregloLotePedido5[i]=arregloLotePedido5[i]-rn[j]-rn[j-1];
+						i=j-1-t;
+						break;
+			
+				}else{
+					costoAnterior=cost;
+					if(j>i+t)
+					{
+						arregloLotePedido6[i]+=rn[j];
+					}
+					
+				}
 			}
+
+
+		}
+		for(i=0;i<t;i++)
+		{
+			arregloLotePedido6[num-1+i]=0;
 		}
 
-		
-	}
-	//console.log(arregloLotePedido6);
+		calcularInventario6();
+
+		//console.log(arregloLotePedido6);
 }
 
 //Política Wagner Whitin
@@ -703,7 +707,7 @@ function heuristica7()
 	//Llena el arreglo fk
 	for (var i = 0; i < num; i++) 
 	{
-		console.log("llena fk", i);
+		//console.log("llena fk", i);
 		fk.push(0);
 	}
 
@@ -715,7 +719,7 @@ function heuristica7()
 		{
 			var actual=fk[j]+calcularCostoTotal(j,i);
 			
-			console.log(j,i,"costoTotal ",actual);			
+			//console.log(j,i,"costoTotal ",actual);			
 
 			var tiempo=0;
 			
@@ -739,7 +743,7 @@ function heuristica7()
 		var pedir=0;
 		if(tiempoPed[i]!=0)
 		{
-			console.log("entro pero no hago nada");
+			//console.log("entro pero no hago nada");
 			for (var j = i; j < num; j++) 
 			{
 				if(j!=i && tiempoPed[j]!=0)
@@ -751,9 +755,15 @@ function heuristica7()
 		}
 		
 	}
+	calcularInventario7();
+
+	for(i=0;i<t;i++)
+	{
+		arregloInventario7[num-1+i]=0;
+	}
 
 
-	console.log("fks", fk, "tiempos de pedido", tiempoPed, "pedido", arregloLotePedido7);
+	//console.log("fks", fk, "tiempos de pedido", tiempoPed, "pedido", arregloLotePedido7);
 
 
 }
@@ -766,16 +776,16 @@ function calcularCostoMantenerEnIHastaJ( i,  j)
 	//console.log(i,j, costoM, isNaN(costoM));
 	for(var k=j-1; k>i; k--)
 	{
-		console.log("for", k);
+		//console.log("for", k);
 		for(var l=i; l<num && l!=k; l++)
 		{
-			console.log("for2", l, rn[k], h[l], rn[k]*h[l]);
+			//console.log("for2", l, rn[k], h[l], rn[k]*h[l]);
 			costoM+=rn[k]*h[l]
 
 		}
 		
 	}
-	console.log("i",i,"j",j,"costoM ",costoM);
+	//console.log("i",i,"j",j,"costoM ",costoM);
 	return costoM;
 }
 
@@ -783,7 +793,7 @@ function calcularCostoMantenerEnIHastaJ( i,  j)
 //Ejemplo: calcular C13 es i=0, j=2
 function calcularCostoTotal( i,  j)
 {
-	console.log("Calculando el costo total");
+	//console.log("Calculando el costo total");
 	var costoM= 0;
 	//console.log(i,j, costoM, isNaN(costoM))
 	if(i+t<j)
@@ -821,6 +831,22 @@ function calcularInventario5()
 	for(i=1; i<num+t; i++)
 	{
 		arregloInventario5[i]=arregloInventario5[i-1]+arregloLotePedido5[i-t]-rn[i];
+	}
+}
+
+function calcularInventario6()
+{
+	for(i=1; i<num+t; i++)
+	{
+		arregloInventario6[i]=arregloInventario6[i-1]+arregloLotePedido6[i-t]-rn[i];
+	}
+}
+
+function calcularInventario7()
+{
+	for(i=1; i<num+t; i++)
+	{
+		arregloInventario7[i]=arregloInventario7[i-1]+arregloLotePedido7[i-t]-rn[i];
 	}
 }
 
