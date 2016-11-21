@@ -74,7 +74,7 @@ function run()
 {
 	loadA();
 
-	loadDummy();
+	//loadDummy();
 
 
 	//console.log(num);
