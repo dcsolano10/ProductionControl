@@ -74,7 +74,7 @@ function run()
 {
 	loadA();
 
-	//loadDummy();
+	//loadDummy2();
 
 
 	//console.log(num);
@@ -121,6 +121,18 @@ function loadDummy()
 	k = [3900,3400,2900,4000,3300,3600,3400,3200,2800]; 
 	h = [77,77,72,50,75,73,63,65,68]; 
 	c = [692,700,785,695,713,799,716,665,731]; 
+}
+
+function loadDummy2()
+{
+	num = 8;
+	d = [0,40,42,30,42,33,43,47,42]; 
+	rp = [0,0,0,0,0,0,0,0,0];
+	ss = [0,0,0,0,0,0,0,0,0];
+	t = 1;
+	k = [4100,3500,4300,4100,4600,4400,4000,4200,4300]; 
+	h = [78,75,86,78,85,72,67,94,91]; 
+	c = [878,861,790,741,839,741,782,703,789]; 
 }
 
 function loadA()
@@ -475,7 +487,7 @@ function heuristica4()
 
 	for (var i = 0; i < num; i++) 
 		{	costoAnterior=0;
-			arregloLotePedido4[i]+=rn[i+t];
+			//arregloLotePedido4[i]+=rn[i+t];
 
 			//console.log(i,j,arregloLotePedido4);
 
@@ -498,19 +510,20 @@ function heuristica4()
 					{
 						//arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j];
 						//console.log("el nuevo es mejor", arregloLotePedido4);
-						arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j];
+						//arregloLotePedido4[i]=arregloLotePedido4[i]+rn[j];
 						i=j-1-t;
 						break;
 
 					}else{
 						//console.log("el anterior era mejor",arregloLotePedido4,i,j,rn[j],rn);
-						arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j]-rn[j-1];
+						arregloLotePedido4[i]=arregloLotePedido4[i]-rn[j-1];
 						i=j-2-t;
 						break;
 					}
 				}else{
 					costoAnterior+=cost;
 					arregloLotePedido4[i]+=rn[j];
+					//console.log(arregloLotePedido4,i,j);
 				}
 			}
 
@@ -548,32 +561,39 @@ function heuristica5()
 		arregloLotePedido5.push(0);
 	}
 
+	var j=0;
 	for (var i = 0; i < num; i++) 
 		{	costoAnterior=9999999999999;
+
+			if(j>num)
+			{
+				break;
+			}
+
 			arregloLotePedido5[i]+=rn[i+t];
 
-			//console.log(i,j,arregloLotePedido5);
+			console.log(i,j,arregloLotePedido5);
 
-			for (var j = i+1; j <= num; j++) 
+			for (j = i+1; j <= num; j++) 
 			{
-				//console.log("ij",i,j,arregloLotePedido5);
+				console.log("ij",i,j,arregloLotePedido5);
 
 				var cost=calcularCostoMantenerEnIHastaJ(i+t,j+1);
 
 				cost=(cost+k[i])/(j-i);
 
-				//console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
+				console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
 
 				if(i+1==j && j==num) //Acabó
 				{
-					//console.log("ii",i,"jj",j,arregloLotePedido5);
+					console.log("ii",i,"jj",j,arregloLotePedido5);
 					break;
 				}
 
 				if(cost>=costoAnterior)
 				{
 					
-						//console.log("el anterior era mejor",arregloLotePedido5,i,j);
+						console.log("el anterior era mejor",arregloLotePedido5,i,j);
 						//arregloLotePedido5[i]=arregloLotePedido5[i]-rn[j]-rn[j-1];
 						i=j-1-t;
 						break;
@@ -583,6 +603,8 @@ function heuristica5()
 					if(j>i+t)
 					{
 						arregloLotePedido5[i]+=rn[j];
+						console.log("else", arregloLotePedido4,i,j);
+						
 					}
 					
 				}
@@ -594,7 +616,7 @@ function heuristica5()
 		calcularInventario5();
 		calcularCostoSM();
 
-		//console.log(arregloLotePedido5);
+		console.log(arregloLotePedido5);
 }
 
 //Política Mínimo Costo Unitario (MCU)
@@ -852,6 +874,11 @@ function calcularInventario4()
 	for(i=1; i<num+t; i++)
 	{
 		arregloInventario4[i]=arregloInventario4[i-1]+arregloLotePedido4[i-t]-rn[i];
+		if(arregloInventario4[i]<0)
+		{
+			arregloLotePedido4[i-t]=-arregloInventario4[i];
+			arregloInventario4[i]=0;
+		}
 	}
 }
 
