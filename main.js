@@ -60,8 +60,11 @@ var arregloInventario7;
 var costoTotal7;
 var costoPedir7;
 var costoMantener7;
-var kLead;
-var cLead;
+
+
+var costoPoliticas;
+
+
 
 
 // Se llama desde el botón
@@ -84,6 +87,12 @@ function run()
 	//console.log(rp);
 
 	requerimientoNeto();
+
+	costoPoliticas=[];
+	for(var i=0;i<7;i++)
+	{
+		costoPoliticas.push(0);
+	}
 
 	heuristica1();
 	heuristica2();
@@ -227,6 +236,8 @@ function heuristica1()
 	{
 		arregloInventario1.push(0);
 	}
+
+	calcularCostoLXL();
 }
 
 //Heurística EOQ
@@ -322,6 +333,7 @@ function heuristica2()
 	}
 	//console.log(arregloLotePedido2);
 	//console.log(arregloInventario2);
+	calcularCostoEOQ();
 }
 
 //Heurística 3 política POQ
@@ -432,6 +444,7 @@ function heuristica3()
 
 	//console.log(arregloLotePedido3);
 	//console.log(arregloInventario3);
+	calcularCostoPOQ();
 
 }
 
@@ -505,6 +518,7 @@ function heuristica4()
 		}
 
 		calcularInventario4();
+		calcularCostoPPB();
 
 		//console.log(arregloLotePedido4);
 }
@@ -578,6 +592,7 @@ function heuristica5()
 		}
 
 		calcularInventario5();
+		calcularCostoSM();
 
 		//console.log(arregloLotePedido5);
 }
@@ -661,6 +676,7 @@ function heuristica6()
 		}
 
 		calcularInventario6();
+		calcularCostoMCU();
 
 		//console.log(arregloLotePedido6);
 }
@@ -774,7 +790,8 @@ function heuristica7()
 		}
 	}
 
-
+	costoPoliticas[6]=fk[num];
+	console.log("costos",costoPoliticas);
 	//console.log("fks", fk, "tiempos de pedido", tiempoPed, "pedido", arregloLotePedido7);
 
 
@@ -861,6 +878,112 @@ function calcularInventario7()
 		arregloInventario7[i]=arregloInventario7[i-1]+arregloLotePedido7[i-t]-rn[i];
 	}
 }
+
+function calcularCostoLXL()
+{
+	for(i=0; i<num; i++)
+	{
+		costoPoliticas[0]+=k[i]+arregloLotePedido1[i]*c[i];
+	}
+}
+
+function calcularCostoEOQ()
+{
+	var cpedir=0;
+	var cmant=0;
+	for(i=0; i<num; i++)
+	{
+		if(arregloLotePedido2[i]!=0)
+		{
+			cpedir+=k[i]+arregloLotePedido2[i]*c[i];
+		}
+
+		if(arregloInventario2[i]!=0)
+		{
+			cmant+=arregloInventario2[i]*h[i];
+		}
+	}
+	costoPoliticas[1]=cpedir+cmant;
+}
+
+function calcularCostoPOQ()
+{
+	var cpedir=0;
+	var cmant=0;
+	for(i=0; i<num; i++)
+	{
+		if(arregloLotePedido3[i]!=0)
+		{
+			cpedir+=k[i]+arregloLotePedido3[i]*c[i];
+		}
+
+		if(arregloInventario3[i]!=0)
+		{
+			cmant+=arregloInventario3[i]*h[i];
+		}
+	}
+	costoPoliticas[2]=cpedir+cmant;
+}
+
+function calcularCostoPPB()
+{
+	var cpedir=0;
+	var cmant=0;
+	for(i=0; i<num; i++)
+	{
+		if(arregloLotePedido4[i]!=0)
+		{
+			cpedir+=k[i]+arregloLotePedido4[i]*c[i];
+		}
+
+		if(arregloInventario4[i]!=0)
+		{
+			cmant+=arregloInventario4[i]*h[i];
+		}
+	}
+	costoPoliticas[3]=cpedir+cmant;
+}
+
+function calcularCostoSM()
+{
+	var cpedir=0;
+	var cmant=0;
+	for(i=0; i<num; i++)
+	{
+		if(arregloLotePedido5[i]!=0)
+		{
+			cpedir+=k[i]+arregloLotePedido5[i]*c[i];
+		}
+
+		if(arregloInventario5[i]!=0)
+		{
+			cmant+=arregloInventario5[i]*h[i];
+		}
+	}
+	costoPoliticas[4]=cpedir+cmant;
+}
+
+function calcularCostoMCU()
+{
+	var cpedir=0;
+	var cmant=0;
+	for(i=0; i<num; i++)
+	{
+		if(arregloLotePedido6[i]!=0)
+		{
+			cpedir+=k[i]+arregloLotePedido6[i]*c[i];
+		}
+
+		if(arregloInventario6[i]!=0)
+		{
+			cmant+=arregloInventario6[i]*h[i];
+		}
+	}
+	costoPoliticas[5]=cpedir+cmant;
+}
+
+
+
 
 
 

@@ -52,13 +52,13 @@ function generarHorizontes() {
 	Morris.Bar({
   element: 'bar-example',
   data: [
-    { y: 'LxL', a: 128},
-    { y: 'EOQ', a: 123},
-    { y: 'MUC', a: 124},
-    { y: 'POQ', a: 120},
-    { y: 'PPB', a: 130},
-    { y: 'SilverMeal', a: 140},
-    { y: 'WW', a: 120}
+    { y: 'LxL', a: costoPoliticas[0]},
+    { y: 'EOQ', a: costoPoliticas[1]},
+    { y: 'MUC', a: costoPoliticas[2]},
+    { y: 'POQ', a: costoPoliticas[3]},
+    { y: 'PPB', a: costoPoliticas[4]},
+    { y: 'SilverMeal', a: costoPoliticas[5]},
+    { y: 'WW', a: costoPoliticas[6]}
   ],
   xkey: 'y',
   ykeys: ['a'],
