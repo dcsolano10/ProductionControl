@@ -74,7 +74,7 @@ function run()
 {
 	loadA();
 
-	//loadDummy2();
+	loadDummy();
 
 
 	//console.log(num);
@@ -572,28 +572,28 @@ function heuristica5()
 
 			arregloLotePedido5[i]+=rn[i+t];
 
-			console.log(i,j,arregloLotePedido5);
+			//console.log(i,j,arregloLotePedido5);
 
 			for (j = i+1; j <= num; j++) 
 			{
-				console.log("ij",i,j,arregloLotePedido5);
+				//console.log("ij",i,j,arregloLotePedido5);
 
 				var cost=calcularCostoMantenerEnIHastaJ(i+t,j+1);
 
 				cost=(cost+k[i])/(j-i);
 
-				console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
+				//console.log(i,j,arregloLotePedido5,"cost",cost,k[i],(j-i));
 
 				if(i+1==j && j==num) //Acabó
 				{
-					console.log("ii",i,"jj",j,arregloLotePedido5);
+					//console.log("ii",i,"jj",j,arregloLotePedido5);
 					break;
 				}
 
 				if(cost>=costoAnterior)
 				{
 					
-						console.log("el anterior era mejor",arregloLotePedido5,i,j);
+						//console.log("el anterior era mejor",arregloLotePedido5,i,j);
 						//arregloLotePedido5[i]=arregloLotePedido5[i]-rn[j]-rn[j-1];
 						i=j-1-t;
 						break;
@@ -603,7 +603,7 @@ function heuristica5()
 					if(j>i+t)
 					{
 						arregloLotePedido5[i]+=rn[j];
-						console.log("else", arregloLotePedido4,i,j);
+						//console.log("else", arregloLotePedido4,i,j);
 						
 					}
 					
@@ -616,7 +616,7 @@ function heuristica5()
 		calcularInventario5();
 		calcularCostoSM();
 
-		console.log(arregloLotePedido5);
+		//console.log(arregloLotePedido5);
 }
 
 //Política Mínimo Costo Unitario (MCU)
@@ -698,6 +698,15 @@ function heuristica6()
 		}
 
 		calcularInventario6();
+		for(i=0;i<num+t;i++)
+		{
+			if(arregloInventario6[i]<0)
+			{
+				arregloLotePedido6[i-t]=-arregloInventario6[i];
+				arregloInventario6[i]=0;
+
+			}
+		}
 		calcularCostoMCU();
 
 		//console.log(arregloLotePedido6);
