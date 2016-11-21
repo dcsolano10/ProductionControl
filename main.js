@@ -194,8 +194,8 @@ function requerimientoNeto()
 			rn[i]=0;
 		}
 	};
-	console.log(rn);
-	console.log("acaba de imprimir rn");
+	//console.log(rn);
+	//console.log("acaba de imprimir rn");
 	
 }
 
@@ -464,7 +464,7 @@ function heuristica4()
 		{	costoAnterior=0;
 			arregloLotePedido4[i]+=rn[i+t];
 
-			console.log(i,j,arregloLotePedido4);
+			//console.log(i,j,arregloLotePedido4);
 
 			for (var j = i+1; j <= num; j++) 
 			{
@@ -699,7 +699,7 @@ function heuristica7()
 	
 
 	//Llena el arreglo de lote pedido 7 de 0's del tamaño lead time + tamaño demandas 
-	for (var i = 0; i < num+t; i++) 
+	for (var i = 0; i < num; i++) 
 	{
 		arregloLotePedido7.push(0);
 	}
@@ -714,23 +714,27 @@ function heuristica7()
 	//ALgoritmo para elegir fk
 	for (var i = 1; i <= num; i++) 
 	{
-		var min= 999999999;
+		var min= 999999999999;
+		var tiempo=0;
 		for(j=0; j<i; j++)
 		{
-			var actual=fk[j]+calcularCostoTotal(j,i);
+			var actual=fk[j]+calcularCostoTotal(j,i+t);
 			
-			//console.log(j,i,"costoTotal ",actual);			
+			//console.log(j,i+t,"costoTotal ",actual);			
 
-			var tiempo=0;
+			
 			
 			if(actual<=min)
 			{
+				//console.log("act<min",actual,min,j);
 				tiempo=j;
 				min=actual;
+				//console.log(tiempo);
 			}
 
 			if(j==i-1)
 			{
+				//console.log("acabe",i,j,tiempo,tiempoPed,fk);
 				fk[i]=min;
 				tiempoPed[tiempo]=1;
 			}
@@ -744,13 +748,13 @@ function heuristica7()
 		if(tiempoPed[i]!=0)
 		{
 			//console.log("entro pero no hago nada");
-			for (var j = i; j < num; j++) 
+			for (var j = i; j < num+t; j++) 
 			{
 				if(j!=i && tiempoPed[j]!=0)
 				{
 					break;
 				}
-				arregloLotePedido7[i]+=rn[j];
+				arregloLotePedido7[i]+=rn[j+t];
 			}
 		}
 		
@@ -759,7 +763,15 @@ function heuristica7()
 
 	for(i=0;i<t;i++)
 	{
-		arregloInventario7[num-1+i]=0;
+		//arregloInventario7[num-1+i]=0;
+	}
+
+	for(i=0;i<num+t;i++)
+	{
+		if(isNaN(arregloLotePedido7[i]))
+		{
+			arregloLotePedido7[i]=0;
+		}
 	}
 
 
@@ -807,7 +819,7 @@ function calcularCostoTotal( i,  j)
 
 	//console.log(calcularCostoMantenerEnIHastaJ(i,j));
 
-	for(var l=i; l<j; l++)
+	for(var l=i+t; l<j; l++)
 	{
 		//console.log("cVariable", rn[l], c[i]);
 		costoM+=rn[l]*c[i];
