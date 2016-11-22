@@ -15,8 +15,7 @@ function generarCasillas() {
 	$("#numPeriodos").attr("readonly",true);
 	$("#leadtime").attr("readonly",true);
 	$("#dataEntrada1").attr("hidden",false);
-	$("#dataResultados1").attr("hidden",false);
-	$("#botonVerde").attr("hidden",true);
+	$("#botonVerde").attr("disabled",true);
 
 
 
@@ -54,6 +53,7 @@ function generarCasillas() {
 }
 
 function generarHorizontes() {
+	$("#dataResultados1").attr("hidden",false);
 
 	run();
 
