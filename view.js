@@ -13,7 +13,9 @@ function generarCasillas() {
 
 	//$('#tablaParametros tr').html('<thead> <tr id="periodos"> <th></th> </tr> </thead> <tbody> <tr id="demanda"> <th>Demanda</th> </tr> <tr id="recepciones"> <th>Recepciones programadas</th> </tr> <tr id="inventario"> <th>Inventario de seguridad</th> </tr> <tr id="costoPedir"> <th>Costo de pedir</th> </tr> <tr id="costoMantener"> <th>Costo de mantener</th> </tr> <tr id="costoUnitario"> <th>Costo unitario</th> </tr> </tbody>');
 	$("#numPeriodos").attr("readonly",true);
+	$("#numPeriodos").attr("disabled",true);
 	$("#leadtime").attr("readonly",true);
+	$("#leadtime").attr("disabled",true);
 	$("#dataEntrada1").attr("hidden",false);
 	$("#botonVerde").attr("disabled",true);
 
